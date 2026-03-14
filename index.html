@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>王少艺的个人主页</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f2f9f4;
+            color: #2f3e3a;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航与头部 */
+        header {
+            background: linear-gradient(135deg, #2e7d32, #66bb6a);
+            color: #fff;
+            padding: 24px 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            width: 160%;
+            height: 140%;
+            background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.18), transparent 60%),
+                        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.16), transparent 60%);
+            top: -20%;
+            left: -30%;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 15px;
+            opacity: 0.95;
+        }
+
+        .clock-wrapper {
+            margin-top: 12px;
+            font-size: 14px;
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.16);
+            backdrop-filter: blur(4px);
+        }
+
+        .clock-time {
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* 主体布局 */
+        .container {
+            max-width: 1080px;
+            margin: 24px auto 40px;
+            padding: 0 16px 16px;
+            display: grid;
+            grid-template-columns: 2fr 1.3fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 860px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            padding: 18px 20px 20px;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(76,175,80,0.07), transparent 65%);
+            top: -40px;
+            right: -40px;
+            pointer-events: none;
+        }
+
+        .card-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            border-left: 4px solid #43a047;
+            padding-left: 10px;
+            color: #2e7d32;
+        }
+
+        .sub-text {
+            font-size: 14px;
+            color: #607d62;
+        }
+
+        ul {
+            padding-left: 18px;
+            margin-top: 6px;
+        }
+
+        li {
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        /* 个人简介 + 图片翻转 */
+        .intro-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .flip-card {
+            width: 150px;
+            height: 200px;
+            perspective: 1000px;
+            flex-shrink: 0;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flip-front {
+            background: linear-gradient(135deg, #a5d6a7, #66bb6a);
+            color: #fff;
+            font-size: 16px;
+            flex-direction: column;
+        }
+
+        .flip-front span {
+            font-size: 26px;
+        }
+
+        .flip-back {
+            background: #e8f5e9;
+            color: #2f3e3a;
+            transform: rotateY(180deg);
+            padding: 12px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .intro-text p {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .tag-list {
+            margin-top: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            margin: 3px 6px 0 0;
+            border-radius: 999px;
+            background: #e0f2f1;
+            color: #00796b;
+            font-size: 12px;
+        }
+
+        /* 技能条动画 */
+        .skills-wrapper {
+            margin-top: 4px;
+        }
+
+        .skill-item {
+            margin-bottom: 10px;
+        }
+
+        .skill-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0f2e9;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .skill-bar-inner {
+            height: 100%;
+            width: 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #43a047, #a5d6a7);
+            transition: width 1.4s ease-out;
+        }
+
+        .skill-bar-inner.delay-1 {
+            transition-delay: 0.1s;
+        }
+        .skill-bar-inner.delay-2 {
+            transition-delay: 0.25s;
+        }
+        .skill-bar-inner.delay-3 {
+            transition-delay: 0.4s;
+        }
+        .skill-bar-inner.delay-4 {
+            transition-delay: 0.55s;
+        }
+
+        /* 课程表（编造课程） */
+        .course-list li span {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        /* 留言板 */
+        .message-input {
+            width: 100%;
+            min-height: 60px;
+            resize: vertical;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #c8e6c9;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .message-input:focus {
+            border-color: #43a047;
+            box-shadow: 0 0 0 2px rgba(67, 160, 71, 0.18);
+        }
+
+        .message-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            gap: 8px;
+        }
+
+        .message-counter {
+            font-size: 12px;
+            color: #78907e;
+        }
+
+        .btn {
+            border: none;
+            outline: none;
+            padding: 7px 16px;
+            border-radius: 999px;
+            background: #43a047;
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 4px 10px rgba(67, 160, 71, 0.25);
+            transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, background 0.2s;
+        }
+
+        .btn:hover {
+            background: #2e7d32;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(56, 142, 60, 0.32);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(56, 142, 60, 0.22);
+        }
+
+        .message-list {
+            margin-top: 12px;
+            max-height: 240px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .message-item {
+            background: #f1f8e9;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            border-left: 3px solid #81c784;
+            animation: messageFadeIn 0.3s ease-out forwards;
+            opacity: 0;
+            transform: translateY(4px);
+        }
+
+        .message-meta {
+            font-size: 11px;
+            color: #78907e;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @keyframes messageFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 右侧信息块统一小一些文字 */
+        .side-card .card-title {
+            font-size: 17px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #78907e;
+            padding: 12px 0 16px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>王少艺 · 个人主页</h1>
+        <p>资源与环境学院 · 农业工程与信息技术专业 · 2025级学生</p>
+        <div class="clock-wrapper">
+            <span class="clock-time" id="clock-time">--:--:--</span>
+            <span id="clock-date">0000-00-00 周-</span>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <!-- 左侧主内容 -->
+    <div>
+        <!-- 关于我 + 图片翻转 -->
+        <section class="card">
+            <h2 class="card-title">关于我</h2>
+            <div class="intro-layout">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-face flip-front">
+                            <span>王</span>
+                            <div>Hover 翻转</div>
+                        </div>
+                        <div class="flip-face flip-back">
+                            <p><strong>王少艺</strong></p>
+                            <p>资源与环境学院</p>
+                            <p>农业工程与信息技术专业</p>
+                            <p>2025级本科生</p>
+                            <p style="margin-top: 6px;">喜欢用代码记录生活，热爱绿色与自然。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="intro-text">
+                    <p>你好，我是 <strong>王少艺</strong>，就读于资源与环境学院，<strong>农业工程与信息技术专业</strong>，2025级学生。</p>
+                    <p>我对信息技术在农业与环境中的应用非常感兴趣，希望通过技术手段让农业生产更高效、更绿色、更智能。</p>
+                    <p>平时喜欢尝试前端小页面、简单数据可视化，也关注环境与可持续发展相关话题。</p>
+                    <div class="tag-list">
+                        <span class="tag">农业工程</span>
+                        <span class="tag">信息技术</span>
+                        <span class="tag">绿色环保</span>
+                        <span class="tag">Web 初学者</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技能与兴趣（带加载动画的技能条） -->
+        <section class="card">
+            <h2 class="card-title">技能与兴趣</h2>
+            <p class="sub-text">以下技能条会在页面加载后自动填充，模拟当前掌握程度。</p>
+            <div class="skills-wrapper">
+                <div class="skill-item">
+                    <div class="skill-label-row">
+                        <span>HTML &amp; CSS</span>
+                        <span>70%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-bar-inner delay-1" data-target="70"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-label-row">
+                        <span>JavaScript 基础</span>
+                        <span>60%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-bar-inner delay-2" data-target="60"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-label-row">
+                        <span>Python 数据处理</span>
+                        <span>65%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-bar-inner delay-3" data-target="65"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-label-row">
+                        <span>农业信息化相关基础</span>
+                        <span>55%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-bar-inner delay-4" data-target="55"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 留言板 -->
+        <section class="card">
+            <h2 class="card-title">留言墙</h2>
+            <p class="sub-text">欢迎给我留下你的想法、建议或一句鼓励的话（仅保存在本地浏览器，不会上传服务器）。</p>
+            <textarea id="message-input" class="message-input" maxlength="200" placeholder="写点什么吧…（最多 200 字）"></textarea>
+            <div class="message-actions">
+                <span class="message-counter" id="message-counter">0 / 200</span>
+                <button class="btn" id="message-submit">
+                    ✍️ 发布留言
+                </button>
+            </div>
+            <div class="message-list" id="message-list"></div>
+        </section>
+    </div>
+
+    <!-- 右侧内容 -->
+    <div>
+        <!-- 学习情况与课程（编造的课程） -->
+        <section class="card side-card">
+            <h2 class="card-title">学习情况 & 主要课程</h2>
+            <p class="sub-text">当前年级：2025级 · 农业工程与信息技术专业</p>
+            <ul class="course-list">
+                <li><span>农业工程导论</span>：了解现代农业装备、工程基础与发展趋势。</li>
+                <li><span>农业信息技术基础</span>：传感器技术、物联网在农业中的应用。</li>
+                <li><span>环境科学与可持续发展</span>：生态环境保护与绿色发展理念。</li>
+                <li><span>Python 编程与数据分析</span>：面向农业数据的处理和可视化。</li>
+                <li><span>遥感与地理信息系统基础</span>：遥感影像、土地利用分析等。</li>
+                <li><span>作物生产与精准农业</span>：精准施肥、灌溉控制等现代技术。</li>
+                <li><span>农业装备与自动化</span>：农业机械、电气控制基础。</li>
+                <li><span>Web 技术入门</span>：HTML/CSS/JavaScript 基础网页制作。</li>
+            </ul>
+        </section>
+
+        <!-- 学习与生活小目标 -->
+        <section class="card side-card">
+            <h2 class="card-title">学习与生活目标</h2>
+            <ul>
+                <li>打好编程基础，将信息技术与农业场景结合。</li>
+                <li>关注绿色生产与节能减排，理解环境友好型农业模式。</li>
+                <li>完成几个与农业数据可视化相关的小项目。</li>
+                <li>多参加实践和比赛，提升动手能力和团队协作能力。</li>
+                <li>保持运动与阅读的习惯，做一个身心都健康的大学生。</li>
+            </ul>
+        </section>
+
+        <!-- 联系方式 -->
+        <section class="card side-card">
+            <h2 class="card-title">联系方式</h2>
+            <ul>
+                <li>邮箱：<a href="mailto:example@mail.com" style="color:#2e7d32;text-decoration:none;">example@mail.com</a></li>
+                <li>微信：请线下向我索取</li>
+                <li>常用设备：笔记本电脑、平板、手机</li>
+            </ul>
+            <p class="sub-text" style="margin-top:8px;">如果你对农业工程、环境与信息技术也感兴趣，欢迎和我交流，一起探索绿色与智慧的未来农业。</p>
+        </section>
+    </div>
+</div>
+
+<footer>
+    © 2026 王少艺 · 资源与环境学院 · 农业工程与信息技术专业
+</footer>
+
+<script>
+    // 实时时钟与日期
+    function updateClock() {
+        const timeEl = document.getElementById('clock-time');
+        const dateEl = document.getElementById('clock-date');
+        const now = new Date();
+
+        const pad = (n) => n.toString().padStart(2, '0');
+
+        const hours = pad(now.getHours());
+        const minutes = pad(now.getMinutes());
+        const seconds = pad(now.getSeconds());
+
+        timeEl.textContent = hours + ':' + minutes + ':' + seconds;
+
+        const year = now.getFullYear();
+        const month = pad(now.getMonth() + 1);
+        const day = pad(now.getDate());
+        const weekDayNames = ['日','一','二','三','四','五','六'];
+        const weekDay = weekDayNames[now.getDay()];
+
+        dateEl.textContent = year + '-' + month + '-' + day + ' 周' + weekDay;
+    }
+
+    // 技能条动画初始化
+    function initSkillBars() {
+        const bars = document.querySelectorAll('.skill-bar-inner');
+        bars.forEach(function(bar) {
+            const target = bar.getAttribute('data-target');
+            if (target) {
+                bar.style.width = target + '%';
+            }
+        });
+    }
+
+    // 留言板逻辑
+    function initMessageBoard() {
+        const input = document.getElementById('message-input');
+        const counter = document.getElementById('message-counter');
+        const btn = document.getElementById('message-submit');
+        const list = document.getElementById('message-list');
+
+        // 字数统计
+        input.addEventListener('input', function() {
+            const length = input.value.length;
+            counter.textContent = length + ' / 200';
+        });
+
+        // 读取本地存储
+        function loadMessages() {
+            const saved = localStorage.getItem('ws_yi_messages');
+            if (!saved) return;
+            try {
+                const arr = JSON.parse(saved);
+                arr.forEach(function(m) {
+                    appendMessage(m.text, m.time, false);
+                });
+            } catch (e) {
+                console.warn('本地留言解析失败', e);
+            }
+        }
+
+        // 保存到本地存储
+        function saveMessages() {
+            const items = list.querySelectorAll('.message-item');
+            const data = [];
+            items.forEach(function(item) {
+                const text = item.querySelector('.message-text').textContent;
+                const time = item.getAttribute('data-time') || '';
+                data.push({ text: text, time: time });
+            });
+            localStorage.setItem('ws_yi_messages', JSON.stringify(data));
+        }
+
+        // 追加留言
+        function appendMessage(text, timeStr, shouldSave) {
+            const item = document.createElement('div');
+            item.className = 'message-item';
+            item.setAttribute('data-time', timeStr);
+
+            const meta = document.createElement('div');
+            meta.className = 'message-meta';
+            meta.innerHTML = '<span>来自访客</span><span>' + timeStr + '</span>';
+
+            const content = document.createElement('div');
+            content.className = 'message-text';
+            content.textContent = text;
+
+            item.appendChild(meta);
+            item.appendChild(content);
+            list.insertBefore(item, list.firstChild);
+
+            if (shouldSave) {
+                saveMessages();
+            }
+        }
+
+        btn.addEventListener('click', function() {
+            const text = input.value.trim();
+            if (!text) {
+                alert('请先写点内容再发布哦～');
+                return;
+            }
+            const now = new Date();
+            const pad = (n) => n.toString().padStart(2, '0');
+            const timeStr = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) +
+                ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+            appendMessage(text, timeStr, true);
+            input.value = '';
+            counter.textContent = '0 / 200';
+        });
+
+        loadMessages();
+    }
+
+    // 初始化
+    window.addEventListener('DOMContentLoaded', function() {
+        updateClock();
+        setInterval(updateClock, 1000);
+        initSkillBars();
+        initMessageBoard();
+    });
+</script>
+</body>
+</html>
